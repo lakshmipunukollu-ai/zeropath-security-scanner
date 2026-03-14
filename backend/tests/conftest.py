@@ -3,6 +3,7 @@ import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from fastapi.testclient import TestClient
+from unittest.mock import patch
 
 # Override DATABASE_URL before importing app
 os.environ["DATABASE_URL"] = "sqlite:///./test.db"
@@ -10,7 +11,10 @@ os.environ["JWT_SECRET"] = "test-secret"
 
 from app.main import app
 from app.models.base import Base, get_db
-from app.auth import hash_password, create_access_token
+from app.auth import hash_password, create_access_token, pwd_context
+
+# Speed up bcrypt for tests by using a minimal rounds config
+pwd_context.update(bcrypt__rounds=4)
 
 # Test database
 TEST_DATABASE_URL = "sqlite:///./test.db"
