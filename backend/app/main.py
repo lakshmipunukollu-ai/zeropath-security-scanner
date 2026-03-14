@@ -16,7 +16,7 @@ async def lifespan(app: FastAPI):
     from sqlalchemy import text
     with engine.connect() as conn:
         conn.execute(text("DROP SCHEMA public CASCADE; CREATE SCHEMA public;"))
-        conn.commit()
+        conn.execute(text("COMMIT"))
     Base.metadata.create_all(bind=engine)
     yield
     # Shutdown: nothing to clean up
