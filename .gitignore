@@ -14,3 +14,8 @@ target/
 .gradle/
 *.class
 .DS_Store
+test.db
+.venv/
+__pycache__/
+*.pyc
+.env
