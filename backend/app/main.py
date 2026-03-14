@@ -13,6 +13,7 @@ from app.routers.repo_router import router as repo_router
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # Startup: create tables
+    Base.metadata.drop_all(bind=engine)
     Base.metadata.create_all(bind=engine)
     yield
     # Shutdown: nothing to clean up
