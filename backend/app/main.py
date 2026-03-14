@@ -13,7 +13,10 @@ from app.routers.repo_router import router as repo_router
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # Startup: create tables
-    Base.metadata.drop_all(bind=engine)
+    from sqlalchemy import text
+    with engine.connect() as conn:
+        conn.execute(text("DROP SCHEMA public CASCADE; CREATE SCHEMA public;"))
+        conn.commit()
     Base.metadata.create_all(bind=engine)
     yield
     # Shutdown: nothing to clean up
